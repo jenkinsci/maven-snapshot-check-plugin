@@ -12,7 +12,7 @@
   </parent>
 
   <artifactId>maven-snapshot-check</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
   <packaging>hpi</packaging>
 
   <name>Jenkins Maven SNAPSHOT Check Plugin</name>
@@ -24,15 +24,14 @@
       <url>http://opensource.org/licenses/MIT</url>
     </license>
   </licenses>
-  <!-- If you want this to appear on the wiki page:
   <developers>
     <developer>
-      <id>bhacker</id>
-      <name>Bob Q. Hacker</name>
-      <email>bhacker@nowhere.net</email>
+      <id>donhui</id>
+      <name>donghui</name>
+      <email>977675308@nqq.com</email>
     </developer>
   </developers>
-  -->
+
   <!-- Assuming you want to host on @jenkinsci:
   <scm>
     <connection>scm:git:git://github.com/jenkinsci/${project.artifactId}-plugin.git</connection>
