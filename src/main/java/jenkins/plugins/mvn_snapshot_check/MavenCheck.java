@@ -103,17 +103,12 @@ public class MavenCheck extends Builder {
     /**
      * Search the given regexp pattern in the file.
      * from text-finder-plugin
-     *
-     * @param abortAfterFirstHit true to return immediately as soon as the first hit is found. this
-     *     is necessary when we are scanning the console output, because otherwise we'll loop
-     *     forever.
      */
     private static boolean checkFile(
             File f,
             Pattern pattern,
             PrintStream logger,
-            Charset charset,
-            boolean abortAfterFirstHit) {
+            Charset charset) {
         boolean logFilename = true;
         boolean foundText = false;
         BufferedReader reader = null;
@@ -130,9 +125,6 @@ public class MavenCheck extends Builder {
                     }
                     logger.println(line);
                     foundText = true;
-                    if (abortAfterFirstHit) {
-                        return true;
-                    }
                 }
             }
         } catch (IOException e) {
@@ -147,9 +139,9 @@ public class MavenCheck extends Builder {
     /**
      * compilePattern
      * from text-finder-plugin
-     * @param logger
-     * @param regexp
-     * @return
+     * @param logger used to println message
+     * @param regexp to match content of file
+     * @return Pattern
      */
     private static Pattern compilePattern(PrintStream logger, String regexp) {
         Pattern pattern = null;
@@ -169,7 +161,7 @@ public class MavenCheck extends Builder {
     private static class FileChecker extends MasterToSlaveFileCallable<Boolean> {
         private final RemoteOutputStream ros;
 
-        public FileChecker(RemoteOutputStream ros) {
+        FileChecker(RemoteOutputStream ros) {
             this.ros = ros;
         }
 
@@ -207,7 +199,7 @@ public class MavenCheck extends Builder {
                     logger.println("Jenkins Maven SNAPSHOT Check Plugin: Unable to read from file '" + f + "'");
                     continue;
                 }
-                foundText |= checkFile(f, pattern, logger, Charset.defaultCharset(), false);
+                foundText |= checkFile(f, pattern, logger, Charset.defaultCharset());
             }
 
             return foundText;
