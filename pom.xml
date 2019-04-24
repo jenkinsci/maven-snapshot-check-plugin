@@ -15,7 +15,7 @@
   <version>1.0-SNAPSHOT</version>
   <packaging>hpi</packaging>
 
-  <name>Maven SNAPSHOT Check Plugin</name>
+  <name>Jenkins Maven SNAPSHOT Check Plugin</name>
   <description>It is used to check if pom.xml contains SNAPSHOT</description>
   <url>https://wiki.jenkins-ci.org/display/JENKINS/Maven+SNAPSHOT+Check+Plugin</url>
   <licenses>
