@@ -27,7 +27,7 @@ import java.util.regex.PatternSyntaxException;
  * @author donghui 2019/4/24.
  */
 public class MavenCheck extends Builder {
-    private static final String POM_FILE = "pom.xml";
+    private static final String POM_FILE = "pom.xml,**/pom.xml";
     private static final String SNAPSHOT = "SNAPSHOT";
 
     private final boolean check;
