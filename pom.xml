@@ -7,7 +7,7 @@
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
     <!-- Baseline Jenkins version you use to build and test the plugin. Users must have this version or newer to run. -->
-    <version>1.580.1</version>
+    <version>2.11</version>
     <relativePath/>
   </parent>
 
@@ -15,7 +15,7 @@
   <version>1.0</version>
   <packaging>hpi</packaging>
 
-  <name>Jenkins Maven SNAPSHOT Check Plugin</name>
+  <name>Maven SNAPSHOT Check Plugin</name>
   <description>It is used to check if pom.xml contains SNAPSHOT</description>
   <url>https://wiki.jenkins-ci.org/display/JENKINS/Maven+SNAPSHOT+Check+Plugin</url>
   <licenses>
