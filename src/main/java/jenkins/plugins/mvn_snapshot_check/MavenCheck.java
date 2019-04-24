@@ -44,9 +44,20 @@ public class MavenCheck extends Builder {
     @Override
     public boolean perform(AbstractBuild build, Launcher launcher, BuildListener listener) {
         FilePath workspace = build.getWorkspace();
-        // workspace.getChannel().
         if (getCheck()) {
-            listener.getLogger().println("SNAPSHOT check!");
+            listener.getLogger().println("[Maven SNAPSHOT Check]");
+            PrintStream logger = listener.getLogger();
+            final RemoteOutputStream ros = new RemoteOutputStream(logger);
+            try {
+                Boolean foundText = workspace.act(new FileChecker(ros));
+                if(null != foundText && foundText){
+                    return false;
+                }
+            } catch (IOException e) {
+                logger.println("Jenkins Maven SNAPSHOT Check Plugin:" + e.getMessage());
+            } catch (InterruptedException e) {
+                logger.println("Jenkins Maven SNAPSHOT Check Plugin:" + e.getMessage());
+            }
         }
         return true;
     }
