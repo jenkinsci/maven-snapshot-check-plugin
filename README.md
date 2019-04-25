@@ -1,5 +1,7 @@
 # Maven SNAPSHOT Check Plugin
 
+[![Build Status](https://ci.jenkins.io/buildStatus/icon?job=Plugins%2Fmaven-snapshot-check-plugin%2Fmaster)](https://ci.jenkins.io/job/Plugins/job/maven-snapshot-check-plugin/job/master/)
+
 This plugin  used to check if pom.xml contains SNAPSHOT.
 
 
