@@ -180,7 +180,7 @@ public class MavenCheck extends Builder {
             // Any files in the final set?
             String[] files = ds.getIncludedFiles();
             if (files.length == 0) {
-                return null ;
+                return false ;
             }
 
             Pattern pattern = compilePattern(logger, SNAPSHOT);
