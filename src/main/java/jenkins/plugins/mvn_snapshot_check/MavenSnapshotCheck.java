@@ -118,7 +118,7 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
      * See <tt>src/main/resources/hudson/plugins/hello_world/HelloWorldBuilder/*.jelly</tt>
      * for the actual HTML fragment for the configuration screen.
      */
-    @Symbol("mavenSNAPSHOTCheck")
+    @Symbol("mavenSnapshotCheck")
     @Extension
     public static final class DescriptorImpl extends BuildStepDescriptor<Builder> {
         /**

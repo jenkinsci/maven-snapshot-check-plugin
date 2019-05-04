@@ -18,11 +18,11 @@ Then it will marked the build failed if matches.
 
 ## pipeline job usage
 ```
-step([$class: 'MavenCheck', check: 'true'])
+step([$class: 'MavenSnapshotCheck', check: 'true'])
 ```
 or
 ```
-mavenSNAPSHOTCheck check: 'true'
+mavenSnapshotCheck check: 'true'
 ```
 
 # Issues
