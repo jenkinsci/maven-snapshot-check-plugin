@@ -3,20 +3,22 @@ package jenkins.plugins.mvn_snapshot_check;
 import hudson.Extension;
 import hudson.FilePath;
 import hudson.Launcher;
-import hudson.model.AbstractBuild;
-import hudson.model.AbstractProject;
-import hudson.model.BuildListener;
+import hudson.model.*;
 import hudson.remoting.RemoteOutputStream;
 import hudson.remoting.VirtualChannel;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.Builder;
 import jenkins.MasterToSlaveFileCallable;
+import jenkins.tasks.SimpleBuildStep;
+import org.jenkinsci.Symbol;
 import org.apache.commons.io.IOUtils;
 import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.FileSet;
 import org.kohsuke.stapler.DataBoundConstructor;
+import org.kohsuke.stapler.DataBoundSetter;
 
+import javax.annotation.Nonnull;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.regex.Matcher;
@@ -26,14 +28,14 @@ import java.util.regex.PatternSyntaxException;
 /**
  * @author donghui 2019/4/24.
  */
-public class MavenCheck extends Builder {
+public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
     private static final String POM_FILE = "pom.xml,**/pom.xml";
     private static final String SNAPSHOT = "SNAPSHOT";
 
-    private final boolean check;
+    private boolean check;
 
     @DataBoundConstructor
-    public MavenCheck(boolean check) {
+    public MavenSnapshotCheck(boolean check) {
         this.check = check;
     }
 
@@ -41,6 +43,23 @@ public class MavenCheck extends Builder {
         return check;
     }
 
+    @DataBoundSetter
+    public void setCheck(boolean check) {
+        this.check = check;
+    }
+
+    @Override
+    public MavenSnapshotCheck.DescriptorImpl getDescriptor() {
+        return (MavenSnapshotCheck.DescriptorImpl)super.getDescriptor();
+    }
+
+    /**
+     * traditional job
+     * @param build
+     * @param launcher
+     * @param listener
+     * @return
+     */
     @Override
     public boolean perform(AbstractBuild build, Launcher launcher, BuildListener listener) {
         FilePath workspace = build.getWorkspace();
@@ -62,19 +81,44 @@ public class MavenCheck extends Builder {
         return true;
     }
 
+    /**
+     * pipeline plugin
+     * @param run
+     * @param workspace
+     * @param launcher
+     * @param taskListener
+     * @throws InterruptedException
+     * @throws IOException
+     */
     @Override
-    public MavenCheck.DescriptorImpl getDescriptor() {
-        return (MavenCheck.DescriptorImpl)super.getDescriptor();
+    public void perform(@Nonnull Run<?, ?> run, @Nonnull FilePath workspace, @Nonnull Launcher launcher, @Nonnull TaskListener taskListener) throws InterruptedException, IOException {
+        if (getCheck()) {
+            taskListener.getLogger().println("[Maven SNAPSHOT Check]");
+            PrintStream logger = taskListener.getLogger();
+            final RemoteOutputStream ros = new RemoteOutputStream(logger);
+            try {
+                Boolean foundText = workspace.act(new FileChecker(ros));
+                if(null != foundText && foundText){
+                    run.setResult(Result.FAILURE);
+                }
+            } catch (IOException e) {
+                logger.println("Jenkins Maven SNAPSHOT Check Plugin:" + e.getMessage());
+            } catch (InterruptedException e) {
+                logger.println("Jenkins Maven SNAPSHOT Check Plugin:" + e.getMessage());
+            }
+        }
+        run.setResult(Result.SUCCESS);
     }
 
     /**
-     * Descriptor for {@link MavenCheck}. Used as a singleton.
+     * Descriptor for {@link MavenSnapshotCheck}. Used as a singleton.
      * The class is marked as public so that it can be accessed from views.
      *
      * <p>
      * See <tt>src/main/resources/hudson/plugins/hello_world/HelloWorldBuilder/*.jelly</tt>
      * for the actual HTML fragment for the configuration screen.
      */
+    @Symbol("mavenSNAPSHOTCheck")
     @Extension
     public static final class DescriptorImpl extends BuildStepDescriptor<Builder> {
         /**
