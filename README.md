@@ -25,6 +25,5 @@ or
 mavenSnapshotCheck check: 'true'
 ```
 
-# Issues
-The issues from [here](https://issues.jenkins-ci.org/issues/?jql=component%20%3D%20maven-snapshot-check-plugin).
-
+# Bug reports
+Please report bugs and feature requests at https://github.com/jenkinsci/maven-snapshot-check-plugin/issues.
