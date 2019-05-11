@@ -31,6 +31,8 @@ import java.util.regex.PatternSyntaxException;
 public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
     private static final String POM_FILE = "pom.xml,**/pom.xml";
     private static final String SNAPSHOT = "SNAPSHOT";
+    private String CHECKED = "Yes, it was checked.";
+    private String NOT_CHECKED = "No, it wasn't checked.";
 
     private boolean check;
 
@@ -64,7 +66,9 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
     public boolean perform(AbstractBuild build, Launcher launcher, BuildListener listener) {
         FilePath workspace = build.getWorkspace();
         if (getCheck()) {
-            listener.getLogger().println("[Maven SNAPSHOT Check]");
+            build.addAction(new MavenSnapshotCheckAction(CHECKED));
+            String message = "[Maven SNAPSHOT Check]";
+            listener.getLogger().println(message);
             PrintStream logger = listener.getLogger();
             final RemoteOutputStream ros = new RemoteOutputStream(logger);
             try {
@@ -73,10 +77,14 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
                     return false;
                 }
             } catch (IOException e) {
-                logger.println("Jenkins Maven SNAPSHOT Check Plugin:" + e.getMessage());
+                message = "Jenkins Maven SNAPSHOT Check Plugin:" + e.getMessage();
+                logger.println(message);
             } catch (InterruptedException e) {
-                logger.println("Jenkins Maven SNAPSHOT Check Plugin:" + e.getMessage());
+                message = "Jenkins Maven SNAPSHOT Check Plugin:" + e.getMessage();
+                logger.println(message);
             }
+        }else {
+            build.addAction(new MavenSnapshotCheckAction(NOT_CHECKED));
         }
         return true;
     }
@@ -93,7 +101,9 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
     @Override
     public void perform(@Nonnull Run<?, ?> run, @Nonnull FilePath workspace, @Nonnull Launcher launcher, @Nonnull TaskListener taskListener) throws InterruptedException, IOException {
         if (getCheck()) {
-            taskListener.getLogger().println("[Maven SNAPSHOT Check]");
+            run.addAction(new MavenSnapshotCheckAction(CHECKED));
+            String message = "[Maven SNAPSHOT Check]";
+            taskListener.getLogger().println(message);
             PrintStream logger = taskListener.getLogger();
             final RemoteOutputStream ros = new RemoteOutputStream(logger);
             try {
@@ -102,10 +112,14 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
                     run.setResult(Result.FAILURE);
                 }
             } catch (IOException e) {
-                logger.println("Jenkins Maven SNAPSHOT Check Plugin:" + e.getMessage());
+                message = "Jenkins Maven SNAPSHOT Check Plugin:" + e.getMessage();
+                logger.println(message);
             } catch (InterruptedException e) {
-                logger.println("Jenkins Maven SNAPSHOT Check Plugin:" + e.getMessage());
+                message = "Jenkins Maven SNAPSHOT Check Plugin:" + e.getMessage();
+                logger.println(message);
             }
+        }else {
+            run.addAction(new MavenSnapshotCheckAction(NOT_CHECKED));
         }
         run.setResult(Result.SUCCESS);
     }
@@ -164,15 +178,18 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
                 Matcher matcher = pattern.matcher(line);
                 if (matcher.find()) {
                     if (logFilename) {
-                        logger.println(f + ":");
+                        String message = f + ":";
+                        logger.println(message);
                         logFilename = false;
                     }
-                    logger.println(line);
+                    String message = line;
+                    logger.println(message);
                     foundText = true;
                 }
             }
         } catch (IOException e) {
-            logger.println("Jenkins Maven SNAPSHOT Check Plugin: Error reading file '" + f + "' -- ignoring");
+            String message = "Jenkins Maven SNAPSHOT Check Plugin: Error reading file '" + f + "' -- ignoring";
+            logger.println(message);
         } finally {
             IOUtils.closeQuietly(reader);
         }
@@ -192,8 +209,8 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
         try {
             pattern = Pattern.compile(regexp);
         } catch (PatternSyntaxException e) {
-            logger.println(
-                    "Jenkins Maven SNAPSHOT Check Plugin: Unable to compile regular expression '" + regexp + "'");
+            String message = "Jenkins Maven SNAPSHOT Check Plugin: Unable to compile regular expression '" + regexp + "'";
+            logger.println(message);
         }
         return pattern;
     }
@@ -235,12 +252,14 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
                 File f = new File(ws, file);
 
                 if (!f.exists()) {
-                    logger.println("Jenkins Maven SNAPSHOT Check Plugin: Unable to find file '" + f + "'");
+                    String message = "Jenkins Maven SNAPSHOT Check Plugin: Unable to find file '" + f + "'";
+                    logger.println(message);
                     continue;
                 }
 
                 if (!f.canRead()) {
-                    logger.println("Jenkins Maven SNAPSHOT Check Plugin: Unable to read from file '" + f + "'");
+                    String message = "Jenkins Maven SNAPSHOT Check Plugin: Unable to read from file '" + f + "'";
+                    logger.println(message);
                     continue;
                 }
                 foundText |= checkFile(f, pattern, logger, Charset.defaultCharset());
