@@ -29,3 +29,14 @@ mavenSnapshotCheck check: 'true'
 
 # Bug reports
 Please report bugs and feature requests at https://github.com/jenkinsci/maven-snapshot-check-plugin/issues.
+
+# How to build and test
+* Build the plugin:
+
+`mvn package`
+
+* Test locally (invokes a local Jenkins instance with the plugin installed):
+
+`mvn hpi:run`
+
+See https://jenkinsci.github.io/maven-hpi-plugin/ for details.
