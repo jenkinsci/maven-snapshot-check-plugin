@@ -4,41 +4,39 @@
 [![Jenkins Plugin](https://img.shields.io/jenkins/plugin/v/maven-snapshot-check.svg)](https://plugins.jenkins.io/maven-snapshot-check)
 [![Jenkins Plugin Installs](https://img.shields.io/jenkins/plugin/i/maven-snapshot-check.svg?color=blue)](https://plugins.jenkins.io/maven-snapshot-check)
 
-[README 中文版](README.zh.md)
-
-This plugin  used to check if pom.xml contains SNAPSHOT.
+该插件用来检查 pom.xml 是否包含 SNAPSHOT。
 
 
-# Usage
+# 使用
 
-## freestyle job usage
-If check the checkbox, it will check if pom.xml contains SNAPSHOT. 
+## 自由风格 job 使用
+如果勾选了复选框，它将检查 pom.xml 中是否包含 SNAPSHOT。
 
 ![](images/maven-snapshot-check-plugin-usage.png)
 
-Then it will marked the build failed if matches.
+如果匹配，该次构建将被标记为失败。
 
 ![](images/job-build-console-output.png)
 
-## pipeline job usage
+## 流水线 job 使用
 ```
 step([$class: 'MavenSnapshotCheck', check: 'true'])
 ```
-or
+或者
 ```
 mavenSnapshotCheck check: 'true'
 ```
 
-# Bug reports
-Please report bugs and feature requests at https://github.com/jenkinsci/maven-snapshot-check-plugin/issues.
+# Bug 报告
+请在 https://github.com/jenkinsci/maven-snapshot-check-plugin/issues 提交 bug 报告或新功能请求。
 
-# How to build and test
-* Build the plugin:
+# 如何构建及测试？
+* 构建插件：
 
 `mvn package`
 
-* Test locally (invokes a local Jenkins instance with the plugin installed):
+* 本地测试（调用本地附带了该插件的 Jenkins 实例）；
 
 `mvn hpi:run`
 
-See https://jenkinsci.github.io/maven-hpi-plugin/ for details.
+更多详情请参考 https://jenkinsci.github.io/maven-hpi-plugin/ 。
