@@ -10,13 +10,18 @@
 # 使用
 
 ## 自由风格 job 使用
+
+在 `构建` 区域，增加 `Maven SNAPSHOT Check` 构建步骤
+
+![add-build-step](images/add-build-step.png)
+
 如果勾选了复选框，它将检查 pom.xml 中是否包含 SNAPSHOT。
 
-![](images/maven-snapshot-check-plugin-usage.png)
+![maven-snapshot-check-plugin-usage](images/maven-snapshot-check-plugin-usage.png)
 
 如果匹配，该次构建将被标记为失败。
 
-![](images/job-build-console-output.png)
+![job-build-console-output](images/job-build-console-output.png)
 
 ## 流水线 job 使用
 ```

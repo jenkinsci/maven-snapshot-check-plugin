@@ -12,13 +12,18 @@ This plugin  used to check if pom.xml contains SNAPSHOT.
 # Usage
 
 ## freestyle job usage
+
+use the `Build Step` called `Maven SNAPSHOT Check` in `Build` section
+
+![add-build-step](images/add-build-step.png)
+
 If check the checkbox, it will check if pom.xml contains SNAPSHOT. 
 
-![](images/maven-snapshot-check-plugin-usage.png)
+![maven-snapshot-check-plugin-usage](images/maven-snapshot-check-plugin-usage.png)
 
 Then it will marked the build failed if matches.
 
-![](images/job-build-console-output.png)
+![job-build-console-output](images/job-build-console-output.png)
 
 ## pipeline job usage
 ```
