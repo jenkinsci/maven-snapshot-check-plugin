@@ -11,7 +11,7 @@
   </parent>
 
   <artifactId>maven-snapshot-check</artifactId>
-  <version>1.4-SNAPSHOT</version>
+  <version>1.5-SNAPSHOT</version>
   <packaging>hpi</packaging>
 
   <name>Maven SNAPSHOT Check Plugin</name>
