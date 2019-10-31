@@ -16,7 +16,7 @@
 
   <name>Maven SNAPSHOT Check Plugin</name>
   <description>It is used to check if pom.xml contains SNAPSHOT</description>
-  <url>https://wiki.jenkins-ci.org/display/JENKINS/Maven+SNAPSHOT+Check+Plugin</url>
+  <url>https://github.com/jenkinsci/maven-snapshot-check-plugin</url>
   <licenses>
     <license>
       <name>MIT License</name>
