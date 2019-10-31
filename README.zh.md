@@ -2,6 +2,7 @@
 
 [![Build Status](https://ci.jenkins.io/buildStatus/icon?job=Plugins%2Fmaven-snapshot-check-plugin%2Fmaster)](https://ci.jenkins.io/job/Plugins/job/maven-snapshot-check-plugin/job/master/)
 [![Jenkins Plugin](https://img.shields.io/jenkins/plugin/v/maven-snapshot-check.svg)](https://plugins.jenkins.io/maven-snapshot-check)
+[![GitHub release](https://img.shields.io/github/release/jenkinsci/maven-snapshot-check-plugin.svg?label=changelog)](https://github.com/jenkinsci/maven-snapshot-check-plugin/releases/latest)
 [![Jenkins Plugin Installs](https://img.shields.io/jenkins/plugin/i/maven-snapshot-check.svg?color=blue)](https://plugins.jenkins.io/maven-snapshot-check)
 
 该插件用来检查 pom.xml 是否包含 SNAPSHOT。
