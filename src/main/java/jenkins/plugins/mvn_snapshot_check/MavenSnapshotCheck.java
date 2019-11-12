@@ -110,6 +110,7 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
                 Boolean foundText = workspace.act(new FileChecker(ros));
                 if(null != foundText && foundText){
                     run.setResult(Result.FAILURE);
+                    throw new MavenSnapshotCheckException("Maven SNAPSHOT Check Failed!", null, false, false);
                 }
             } catch (IOException e) {
                 message = "Jenkins Maven SNAPSHOT Check Plugin:" + e.getMessage();
