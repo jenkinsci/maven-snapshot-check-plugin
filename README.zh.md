@@ -24,6 +24,11 @@
 
 ![job-build-console-output](images/job-build-console-output.png)
 
+## Maven job 使用
+
+在 `Pre Steps` 区域，增加 `Maven SNAPSHOT Check` 步骤
+![pre-build-step](images/pre-build-step.png)
+
 ## 流水线 job 使用
 ```
 step([$class: 'MavenSnapshotCheck', check: 'true'])

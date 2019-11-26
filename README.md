@@ -12,7 +12,7 @@ This plugin  used to check if pom.xml contains SNAPSHOT.
 
 # Usage
 
-## freestyle job usage
+## FreeStyle job usage
 
 use the `Build Step` called `Maven SNAPSHOT Check` in `Build` section
 
@@ -26,7 +26,12 @@ Then it will marked the build failed if matches.
 
 ![job-build-console-output](images/job-build-console-output.png)
 
-## pipeline job usage
+## Maven job usage
+
+use the `pre-build step` called `Maven SNAPSHOT Check` in `Pre Steps` section
+![pre-build-step](images/pre-build-step.png)
+
+## Pipeline  job usage
 ```
 step([$class: 'MavenSnapshotCheck', check: 'true'])
 ```
