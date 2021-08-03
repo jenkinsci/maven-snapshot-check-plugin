@@ -14,14 +14,14 @@
             <repositories>
                 <repository>
                     <id>repo.jenkins-ci.org</id>
-                    <url>http://repo.jenkins-ci.org/public/</url>
+                    <url>https://repo.jenkins-ci.org/artifactory/public/</url>
                 </repository>
             </repositories>
 
             <pluginRepositories>
                 <pluginRepository>
                     <id>repo.jenkins-ci.org</id>
-                    <url>http://repo.jenkins-ci.org/public/</url>
+                    <url>https://repo.jenkins-ci.org/artifactory/public/</url>
                 </pluginRepository>
             </pluginRepositories>
         </profile>
@@ -30,7 +30,7 @@
     <mirrors>
         <mirror>
             <id>repo.jenkins-ci.org</id>
-            <url>http://repo.jenkins-ci.org/public/</url>
+            <url>https://repo.jenkins-ci.org/artifactory/public/</url>
             <mirrorOf>m.g.o-public</mirrorOf>
         </mirror>
     </mirrors>
