@@ -51,3 +51,7 @@ mavenSnapshotCheck check: 'true'
 `mvn hpi:run`
 
 更多详情请参考 https://jenkinsci.github.io/maven-hpi-plugin/ 。
+
+# 相关博客
+- [Jenkins 插件开发之旅：两天内从 idea 到发布 (上篇)](https://xie.infoq.cn/article/c398bb482db91bada8e40b5c8)
+- [Jenkins 插件开发之旅：两天内从 idea 到发布 (下篇)](https://xie.infoq.cn/article/d394779a53d5cbd5fcfb97860)
