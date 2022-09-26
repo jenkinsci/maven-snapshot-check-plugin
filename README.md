@@ -39,6 +39,10 @@ or
 ```
 mavenSnapshotCheck check: 'true'
 ```
+or
+```
+mavenSnapshotCheck check: 'true', pomFiles: 'pom.xml'
+```
 
 # Bug reports
 Please report bugs and feature requests at https://github.com/jenkinsci/maven-snapshot-check-plugin/issues.
