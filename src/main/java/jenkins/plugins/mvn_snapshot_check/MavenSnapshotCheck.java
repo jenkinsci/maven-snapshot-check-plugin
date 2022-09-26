@@ -35,7 +35,7 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
     private String NOT_CHECKED = "No, it wasn't checked.";
 
     private boolean check;
-    private static String pomFiles = DEFAULT_POM_FILES;
+    private String pomFiles = DEFAULT_POM_FILES;
 
     @DataBoundConstructor
     public MavenSnapshotCheck(boolean check, String pomFiles) {
@@ -52,7 +52,7 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
         this.check = check;
     }
 
-    public static String getPomFiles() {
+    public String getPomFiles() {
         return pomFiles;
     }
 
