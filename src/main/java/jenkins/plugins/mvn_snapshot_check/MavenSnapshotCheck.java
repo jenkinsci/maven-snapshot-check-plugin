@@ -29,16 +29,18 @@ import java.util.regex.PatternSyntaxException;
  * @author donghui 2019/4/24.
  */
 public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
-    private static final String POM_FILE = "pom.xml,**/pom.xml";
+    private static final String DEFAULT_POM_FILES = "pom.xml,**/pom.xml";
     private static final String SNAPSHOT = "SNAPSHOT";
     private String CHECKED = "Yes, it was checked.";
     private String NOT_CHECKED = "No, it wasn't checked.";
 
     private boolean check;
+    private static String pomFiles = DEFAULT_POM_FILES;
 
     @DataBoundConstructor
-    public MavenSnapshotCheck(boolean check) {
+    public MavenSnapshotCheck(boolean check, String pomFiles) {
         this.check = check;
+        this.pomFiles = pomFiles;
     }
 
     public boolean getCheck() {
@@ -48,6 +50,15 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
     @DataBoundSetter
     public void setCheck(boolean check) {
         this.check = check;
+    }
+
+    public static String getPomFiles() {
+        return pomFiles;
+    }
+
+    @DataBoundSetter
+    public void setPomFiles(String pomFiles) {
+        this.pomFiles = pomFiles;
     }
 
     @Override
@@ -236,7 +247,7 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
             Project p = new Project();
             fs.setProject(p);
             fs.setDir(ws);
-            fs.setIncludes(POM_FILE);
+            fs.setIncludes(getPomFiles());
             DirectoryScanner ds = fs.getDirectoryScanner(p);
 
             // Any files in the final set?
