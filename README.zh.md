@@ -37,6 +37,10 @@ step([$class: 'MavenSnapshotCheck', check: 'true'])
 ```
 mavenSnapshotCheck check: 'true'
 ```
+或者
+```
+mavenSnapshotCheck check: 'true', pomFiles: 'pom.xml'
+```
 
 # Bug 报告
 请在 https://github.com/jenkinsci/maven-snapshot-check-plugin/issues 提交 bug 报告或新功能请求。
