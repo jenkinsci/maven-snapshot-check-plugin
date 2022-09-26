@@ -78,12 +78,12 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
         FilePath workspace = build.getWorkspace();
         if (getCheck()) {
             build.addAction(new MavenSnapshotCheckAction(CHECKED));
-            String message = "[Maven SNAPSHOT Check]";
+            String message = "[Maven SNAPSHOT Check], pomFiles: " + getPomFiles();
             listener.getLogger().println(message);
             PrintStream logger = listener.getLogger();
             final RemoteOutputStream ros = new RemoteOutputStream(logger);
             try {
-                Boolean foundText = workspace.act(new FileChecker(ros));
+                Boolean foundText = workspace.act(new FileChecker(ros, getPomFiles()));
                 if(null != foundText && foundText){
                     return false;
                 }
@@ -113,12 +113,12 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
     public void perform(@Nonnull Run<?, ?> run, @Nonnull FilePath workspace, @Nonnull Launcher launcher, @Nonnull TaskListener taskListener) throws InterruptedException, IOException {
         if (getCheck()) {
             run.addAction(new MavenSnapshotCheckAction(CHECKED));
-            String message = "[Maven SNAPSHOT Check]";
+            String message = "[Maven SNAPSHOT Check], pomFiles: " + getPomFiles();
             taskListener.getLogger().println(message);
             PrintStream logger = taskListener.getLogger();
             final RemoteOutputStream ros = new RemoteOutputStream(logger);
             try {
-                Boolean foundText = workspace.act(new FileChecker(ros));
+                Boolean foundText = workspace.act(new FileChecker(ros, getPomFiles()));
                 if(null != foundText && foundText){
                     run.setResult(Result.FAILURE);
                     throw new MavenSnapshotCheckException("Maven SNAPSHOT Check Failed!", null, false, false);
@@ -233,9 +233,11 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
      */
     private static class FileChecker extends MasterToSlaveFileCallable<Boolean> {
         private final RemoteOutputStream ros;
+        private String includePomFiles;
 
-        FileChecker(RemoteOutputStream ros) {
+        FileChecker(RemoteOutputStream ros, String includePomFiles) {
             this.ros = ros;
+            this.includePomFiles = includePomFiles;
         }
 
         @Override
@@ -247,7 +249,7 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
             Project p = new Project();
             fs.setProject(p);
             fs.setDir(ws);
-            fs.setIncludes(getPomFiles());
+            fs.setIncludes(includePomFiles);
             DirectoryScanner ds = fs.getDirectoryScanner(p);
 
             // Any files in the final set?
