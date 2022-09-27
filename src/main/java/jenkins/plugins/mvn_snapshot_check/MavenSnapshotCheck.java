@@ -10,6 +10,7 @@ import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.Builder;
 import jenkins.MasterToSlaveFileCallable;
 import jenkins.tasks.SimpleBuildStep;
+import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.Symbol;
 import org.apache.commons.io.IOUtils;
 import org.apache.tools.ant.DirectoryScanner;
@@ -35,7 +36,7 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
     private String NOT_CHECKED = "No, it wasn't checked.";
 
     private boolean check;
-    private String pomFiles = DEFAULT_POM_FILES;
+    private String pomFiles;
 
     @DataBoundConstructor
     public MavenSnapshotCheck(boolean check, String pomFiles) {
@@ -53,7 +54,10 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
     }
 
     public String getPomFiles() {
-        return pomFiles;
+        if(StringUtils.isNotEmpty(pomFiles)){
+            return pomFiles;
+        }
+        return DEFAULT_POM_FILES;
     }
 
     @DataBoundSetter
