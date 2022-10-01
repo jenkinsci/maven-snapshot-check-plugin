@@ -39,9 +39,10 @@ or
 ```
 mavenSnapshotCheck check: 'true'
 ```
-or
+or, you can customize the pomFiles parameter to check only the specified pom files 
+(If the pomFiles parameter is not defined, its default value is `pom.xml, * */pom.xml`)
 ```
-mavenSnapshotCheck check: 'true', pomFiles: 'pom.xml'
+mavenSnapshotCheck check: 'true', pomFiles: 'pom.xml,sub-dir/pom.xml'
 ```
 
 # Bug reports
