@@ -111,8 +111,6 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
      * @param workspace
      * @param launcher
      * @param taskListener
-     * @throws InterruptedException
-     * @throws IOException
      */
     @Override
     public void perform(@Nonnull Run<?, ?> run, @Nonnull FilePath workspace, @Nonnull Launcher launcher, @Nonnull TaskListener taskListener) {
