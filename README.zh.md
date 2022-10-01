@@ -37,9 +37,10 @@ step([$class: 'MavenSnapshotCheck', check: 'true'])
 ```
 mavenSnapshotCheck check: 'true'
 ```
-或者
+或者，可以自定义 pomFiles 参数，用来只对指定的 pom 文件进行检查
+（如果未定义 pomFiles 参数，它的默认值是 `pom.xml,**/pom.xml`）
 ```
-mavenSnapshotCheck check: 'true', pomFiles: 'pom.xml'
+mavenSnapshotCheck check: 'true', pomFiles: 'pom.xml,sub-dir/pom.xml'
 ```
 
 # Bug 报告
