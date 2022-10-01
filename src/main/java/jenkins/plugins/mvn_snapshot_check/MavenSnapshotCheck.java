@@ -12,7 +12,6 @@ import jenkins.MasterToSlaveFileCallable;
 import jenkins.tasks.SimpleBuildStep;
 import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.Symbol;
-import org.apache.commons.io.IOUtils;
 import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.FileSet;
@@ -30,10 +29,11 @@ import java.util.regex.PatternSyntaxException;
  * @author donghui 2019/4/24.
  */
 public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
+    private static final String PLUGIN_NAME = "Jenkins Maven SNAPSHOT Check Plugin";
     private static final String DEFAULT_POM_FILES = "pom.xml,**/pom.xml";
     private static final String SNAPSHOT = "SNAPSHOT";
-    private String CHECKED = "Yes, it was checked.";
-    private String NOT_CHECKED = "No, it wasn't checked.";
+    private String CHECKED = "Yes, it was checked."; // NOSONAR
+    private String NOT_CHECKED = "No, it wasn't checked."; // NOSONAR
 
     private boolean check;
     private String pomFiles;
@@ -87,16 +87,17 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
             PrintStream logger = listener.getLogger();
             final RemoteOutputStream ros = new RemoteOutputStream(logger);
             try {
-                Boolean foundText = workspace.act(new FileChecker(ros, getPomFiles()));
+                Boolean foundText = workspace.act(new FileChecker(ros, getPomFiles())); // NOSONAR
                 if(null != foundText && foundText){
                     return false;
                 }
             } catch (IOException e) {
-                message = "Jenkins Maven SNAPSHOT Check Plugin:" + e.getMessage();
+                message = PLUGIN_NAME + ":" + e.getMessage();
                 logger.println(message);
             } catch (InterruptedException e) {
-                message = "Jenkins Maven SNAPSHOT Check Plugin:" + e.getMessage();
+                message = PLUGIN_NAME + ":" + e.getMessage();
                 logger.println(message);
+                Thread.currentThread().interrupt();
             }
         }else {
             build.addAction(new MavenSnapshotCheckAction(NOT_CHECKED));
@@ -114,7 +115,7 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
      * @throws IOException
      */
     @Override
-    public void perform(@Nonnull Run<?, ?> run, @Nonnull FilePath workspace, @Nonnull Launcher launcher, @Nonnull TaskListener taskListener) throws InterruptedException, IOException {
+    public void perform(@Nonnull Run<?, ?> run, @Nonnull FilePath workspace, @Nonnull Launcher launcher, @Nonnull TaskListener taskListener) {
         if (getCheck()) {
             run.addAction(new MavenSnapshotCheckAction(CHECKED));
             String message = "[Maven SNAPSHOT Check], pomFiles: " + getPomFiles();
@@ -128,11 +129,12 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
                     throw new MavenSnapshotCheckException("Maven SNAPSHOT Check Failed!", null, false, false);
                 }
             } catch (IOException e) {
-                message = "Jenkins Maven SNAPSHOT Check Plugin:" + e.getMessage();
+                message = PLUGIN_NAME + ":" + e.getMessage();
                 logger.println(message);
-            } catch (InterruptedException e) {
-                message = "Jenkins Maven SNAPSHOT Check Plugin:" + e.getMessage();
+            } catch (InterruptedException e){
+                message = PLUGIN_NAME + ":" + e.getMessage();
                 logger.println(message);
+                Thread.currentThread().interrupt();
             }
         }else {
             run.addAction(new MavenSnapshotCheckAction(NOT_CHECKED));
@@ -174,63 +176,6 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
         }
     }
 
-    /**
-     * Search the given regexp pattern in the file.
-     * from text-finder-plugin
-     */
-    private static boolean checkFile(
-            File f,
-            Pattern pattern,
-            PrintStream logger,
-            Charset charset) {
-        boolean logFilename = true;
-        boolean foundText = false;
-        BufferedReader reader = null;
-        try {
-            // Assume default encoding and text files
-            String line;
-            reader = new BufferedReader(new InputStreamReader(new FileInputStream(f), charset));
-            while ((line = reader.readLine()) != null) {
-                Matcher matcher = pattern.matcher(line);
-                if (matcher.find()) {
-                    if (logFilename) {
-                        String message = f + ":";
-                        logger.println(message);
-                        logFilename = false;
-                    }
-                    String message = line;
-                    logger.println(message);
-                    foundText = true;
-                }
-            }
-        } catch (IOException e) {
-            String message = "Jenkins Maven SNAPSHOT Check Plugin: Error reading file '" + f + "' -- ignoring";
-            logger.println(message);
-        } finally {
-            IOUtils.closeQuietly(reader);
-        }
-        return foundText;
-    }
-
-
-    /**
-     * compilePattern
-     * from text-finder-plugin
-     * @param logger used to println message
-     * @param regexp to match content of file
-     * @return Pattern
-     */
-    private static Pattern compilePattern(PrintStream logger, String regexp) {
-        Pattern pattern = null;
-        try {
-            pattern = Pattern.compile(regexp);
-        } catch (PatternSyntaxException e) {
-            String message = "Jenkins Maven SNAPSHOT Check Plugin: Unable to compile regular expression '" + regexp + "'";
-            logger.println(message);
-        }
-        return pattern;
-    }
-
 
     /**
      * from text-finder-plugin
@@ -245,45 +190,100 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
         }
 
         @Override
-        public Boolean invoke(File ws, VirtualChannel channel) throws IOException, InterruptedException {
-            PrintStream logger = new PrintStream(ros, false, Charset.defaultCharset().toString());
-
-            // Collect list of files for searching
-            FileSet fs = new FileSet();
-            Project p = new Project();
-            fs.setProject(p);
-            fs.setDir(ws);
-            fs.setIncludes(includePomFiles);
-            DirectoryScanner ds = fs.getDirectoryScanner(p);
-
-            // Any files in the final set?
-            String[] files = ds.getIncludedFiles();
-            if (files.length == 0) {
-                return false ;
-            }
-
-            Pattern pattern = compilePattern(logger, SNAPSHOT);
-
+        public Boolean invoke(File ws, VirtualChannel channel) throws IOException {
             boolean foundText = false;
+            try(PrintStream logger = new PrintStream(ros, false, Charset.defaultCharset().toString())) {
 
-            for (String file : files) {
-                File f = new File(ws, file);
+                // Collect list of files for searching
+                FileSet fs = new FileSet();
+                Project p = new Project();
+                fs.setProject(p);
+                fs.setDir(ws);
+                fs.setIncludes(includePomFiles);
+                DirectoryScanner ds = fs.getDirectoryScanner(p);
 
-                if (!f.exists()) {
-                    String message = "Jenkins Maven SNAPSHOT Check Plugin: Unable to find file '" + f + "'";
-                    logger.println(message);
-                    continue;
+                // Any files in the final set?
+                String[] files = ds.getIncludedFiles();
+                if (files.length == 0) {
+                    return false;
                 }
 
-                if (!f.canRead()) {
-                    String message = "Jenkins Maven SNAPSHOT Check Plugin: Unable to read from file '" + f + "'";
-                    logger.println(message);
-                    continue;
+                Pattern pattern = compilePattern(logger, SNAPSHOT);
+
+                for (String file : files) {
+                    File f = new File(ws, file);
+
+                    if (!f.exists()) {
+                        String message = "Jenkins Maven SNAPSHOT Check Plugin: Unable to find file '" + f + "'";
+                        logger.println(message);
+                        continue;
+                    }
+
+                    if (!f.canRead()) {
+                        String message = "Jenkins Maven SNAPSHOT Check Plugin: Unable to read from file '" + f + "'";
+                        logger.println(message);
+                        continue;
+                    }
+                    foundText |= checkFile(f, pattern, logger, Charset.defaultCharset()); //NOSONAR
                 }
-                foundText |= checkFile(f, pattern, logger, Charset.defaultCharset());
             }
 
             return foundText;
         }
+
+        /**
+         * Search the given regexp pattern in the file.
+         * from text-finder-plugin
+         */
+        private boolean checkFile(
+                File f,
+                Pattern pattern,
+                PrintStream logger,
+                Charset charset) {
+            boolean logFilename = true;
+            boolean foundText = false;
+
+            try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(f), charset));) {
+                // Assume default encoding and text files
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    Matcher matcher = pattern.matcher(line);
+                    if (matcher.find()) {
+                        if (logFilename) {
+                            String message = f + ":";
+                            logger.println(message);
+                            logFilename = false;
+                        }
+                        String message = line;
+                        logger.println(message);
+                        foundText = true;
+                    }
+                }
+            } catch (IOException e) {
+                String message = "Jenkins Maven SNAPSHOT Check Plugin: Error reading file '" + f + "' -- ignoring";
+                logger.println(message);
+            }
+            return foundText;
+        }
+
+
+        /**
+         * compilePattern
+         * from text-finder-plugin
+         * @param logger used to println message
+         * @param regexp to match content of file
+         * @return Pattern
+         */
+        private Pattern compilePattern(PrintStream logger, String regexp) {
+            Pattern pattern = null;
+            try {
+                pattern = Pattern.compile(regexp);
+            } catch (PatternSyntaxException e) {
+                String message = "Jenkins Maven SNAPSHOT Check Plugin: Unable to compile regular expression '" + regexp + "'";
+                logger.println(message);
+            }
+            return pattern;
+        }
+
     }
 }
