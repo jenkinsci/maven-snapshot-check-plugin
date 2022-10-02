@@ -1,1 +1,9 @@
-buildPlugin(tests: [skip: 'true'])
+def jenkinsVersion = '2.277.4'
+
+def configurations = [
+  [ platform: "linux", jdk: "8", jenkins: null ],
+  [ platform: "linux", jdk: "8", jenkins: jenkinsVersion ],
+  [ platform: "linux", jdk: "11", jenkins: jenkinsVersion, javaLevel: "8"]
+]
+
+buildPlugin(configurations: configurations, timeout: 180, tests: [skip: 'true'])
