@@ -145,7 +145,7 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
      * The class is marked as public so that it can be accessed from views.
      *
      * <p>
-     * See <tt>src/main/resources/hudson/plugins/hello_world/HelloWorldBuilder/*.jelly</tt>
+     * See <code>src/main/resources/jenkins/plugins/mvn_snapshot_check/MavenSnapshotCheck/config.jelly</code>
      * for the actual HTML fragment for the configuration screen.
      */
     @Symbol("mavenSnapshotCheck")
