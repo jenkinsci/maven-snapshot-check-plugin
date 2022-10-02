@@ -18,7 +18,7 @@ import org.apache.tools.ant.types.FileSet;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 
-import javax.annotation.Nonnull;
+import edu.umd.cs.findbugs.annotations.NonNull;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.regex.Matcher;
@@ -113,7 +113,7 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
      * @param taskListener
      */
     @Override
-    public void perform(@Nonnull Run<?, ?> run, @Nonnull FilePath workspace, @Nonnull Launcher launcher, @Nonnull TaskListener taskListener) {
+    public void perform(@NonNull Run<?, ?> run, @NonNull FilePath workspace, @NonNull Launcher launcher, @NonNull TaskListener taskListener) {
         if (getCheck()) {
             run.addAction(new MavenSnapshotCheckAction(CHECKED));
             String message = "[Maven SNAPSHOT Check], pomFiles: " + getPomFiles();

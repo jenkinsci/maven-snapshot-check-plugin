@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
-    <version>3.36</version>
+    <version>4.42</version>
     <relativePath />
   </parent>
 
@@ -17,7 +17,7 @@
     <revision>1</revision>
     <changelist>999999-SNAPSHOT</changelist>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jenkins.version>1.625.3</jenkins.version>
+    <jenkins.version>2.277.4</jenkins.version>
     <java.level>8</java.level>
   </properties>
 
@@ -76,48 +76,6 @@
       <groupId>org.jenkins-ci.plugins</groupId>
       <artifactId>structs</artifactId>
       <version>1.7</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jenkins-ci.plugins.workflow</groupId>
-      <artifactId>workflow-step-api</artifactId>
-      <version>2.12</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jenkins-ci.plugins.workflow</groupId>
-      <artifactId>workflow-cps</artifactId>
-      <version>2.39</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jenkins-ci.plugins.workflow</groupId>
-      <artifactId>workflow-job</artifactId>
-      <version>2.11.2</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jenkins-ci.plugins.workflow</groupId>
-      <artifactId>workflow-basic-steps</artifactId>
-      <version>2.6</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jenkins-ci.plugins.workflow</groupId>
-      <artifactId>workflow-durable-task-step</artifactId>
-      <version>2.13</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jenkins-ci.plugins.workflow</groupId>
-      <artifactId>workflow-api</artifactId>
-      <version>2.20</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jenkins-ci.plugins.workflow</groupId>
-      <artifactId>workflow-support</artifactId>
-      <version>2.14</version>
-      <scope>test</scope>
     </dependency>
   </dependencies>
 
