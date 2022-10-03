@@ -76,7 +76,6 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
      * @param build a build this is running as a part of
      * @param launcher a way to start processes
      * @param listener a place to send output
-     * @return
      */
     @Override
     public boolean perform(AbstractBuild build, Launcher launcher, BuildListener listener) {
