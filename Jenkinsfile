@@ -6,4 +6,4 @@ def configurations = [
   [ platform: "linux", jdk: "11", jenkins: jenkinsVersion ]
 ]
 
-buildPlugin(configurations: configurations, timeout: 180, tests: [skip: 'true'])
+buildPlugin(configurations: configurations, timeout: 180)
