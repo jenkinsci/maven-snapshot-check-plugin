@@ -1,5 +1,6 @@
 package jenkins.plugins.mvn_snapshot_check;
 
+import hudson.EnvVars;
 import hudson.Extension;
 import hudson.FilePath;
 import hudson.Launcher;
@@ -107,18 +108,20 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
 
     /**
      * pipeline plugin
-     * @param run
-     * @param workspace
-     * @param launcher
-     * @param taskListener
+     * @param run a build this is running as a part of
+     * @param workspace a workspace to use for any file operations
+     * @param env environment variables applicable to this step
+     * @param launcher a way to start processes
+     * @param listener a place to send output
      */
     @Override
-    public void perform(@NonNull Run<?, ?> run, @NonNull FilePath workspace, @NonNull Launcher launcher, @NonNull TaskListener taskListener) {
+    public void perform(@NonNull Run<?, ?> run, @NonNull FilePath workspace, @NonNull EnvVars env, @NonNull Launcher launcher,
+                        @NonNull TaskListener listener) {
         if (getCheck()) {
             run.addAction(new MavenSnapshotCheckAction(CHECKED));
             String message = "[Maven SNAPSHOT Check], pomFiles: " + getPomFiles();
-            taskListener.getLogger().println(message);
-            PrintStream logger = taskListener.getLogger();
+            listener.getLogger().println(message);
+            PrintStream logger = listener.getLogger();
             final RemoteOutputStream ros = new RemoteOutputStream(logger);
             try {
                 Boolean foundText = workspace.act(new FileChecker(ros, getPomFiles()));
