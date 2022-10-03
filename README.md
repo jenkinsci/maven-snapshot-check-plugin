@@ -1,6 +1,7 @@
 # Maven SNAPSHOT Check Plugin
 
 [![Build Status](https://ci.jenkins.io/buildStatus/icon?job=Plugins%2Fmaven-snapshot-check-plugin%2Fmaster)](https://ci.jenkins.io/job/Plugins/job/maven-snapshot-check-plugin/job/master/)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=donhui_maven-snapshot-check-plugin2&metric=coverage)](https://sonarcloud.io/summary/new_code?id=donhui_maven-snapshot-check-plugin2)
 [![Jenkins Plugin](https://img.shields.io/jenkins/plugin/v/maven-snapshot-check.svg)](https://plugins.jenkins.io/maven-snapshot-check)
 [![GitHub release](https://img.shields.io/github/release/jenkinsci/maven-snapshot-check-plugin.svg?label=changelog)](https://github.com/jenkinsci/maven-snapshot-check-plugin/releases/latest)
 [![Jenkins Plugin Installs](https://img.shields.io/jenkins/plugin/i/maven-snapshot-check.svg?color=blue)](https://plugins.jenkins.io/maven-snapshot-check)
