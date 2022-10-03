@@ -66,6 +66,19 @@ public class MavenSnapshotCheckTest {
     }
 
     @Test
+    public void testPipelineBuildSuccessWithNotChecked() throws Exception {
+        URL zipFile = getClass().getResource("test-success.zip");
+        WorkflowJob job = jenkins.createProject(WorkflowJob.class, "test-pipeline-success");
+        String pipelineScript =
+                "node {\n" +
+                        "  unzip '" + zipFile.getPath() + "'\n" +
+                        "  mavenSnapshotCheck check: 'false' \n" +
+                        "}";
+        job.setDefinition(new CpsFlowDefinition(pipelineScript, true));
+        jenkins.assertBuildStatusSuccess(job.scheduleBuild2(0));
+    }
+
+    @Test
     public void testPipelineBuildFailure() throws Exception {
         URL zipFile = getClass().getResource("test-failure.zip");
 
