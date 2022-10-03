@@ -1,4 +1,4 @@
-def jenkinsVersion = '2.277.4'
+def jenkinsVersion = '2.332.4'
 
 def configurations = [
   [ platform: "linux", jdk: "8", jenkins: null ],
