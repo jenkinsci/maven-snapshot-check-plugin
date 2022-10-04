@@ -36,6 +36,14 @@ public class MavenSnapshotCheckTest {
         jenkins.assertLogContains("SNAPSHOT", build);
     }
 
+    @Test
+    public void testFreestyleBuildSuccessNotChecked() throws Exception {
+        FreeStyleProject project = jenkins.createFreeStyleProject();
+        project.setScm(new ExtractResourceSCM(getClass().getResource("test-success.zip")));
+        MavenSnapshotCheck mavenSnapshotCheck = new MavenSnapshotCheck(false,null);
+        project.getBuildersList().add(mavenSnapshotCheck);
+        FreeStyleBuild build = jenkins.buildAndAssertSuccess(project);
+    }
 
     @Test
     public void testPipelineBuildSuccess() throws Exception {
