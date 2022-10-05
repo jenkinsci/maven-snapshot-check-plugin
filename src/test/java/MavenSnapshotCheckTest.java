@@ -3,7 +3,6 @@ import jenkins.plugins.mvn_snapshot_check.MavenSnapshotCheck;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
-import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.jvnet.hudson.test.ExtractResourceSCM;
@@ -43,6 +42,7 @@ public class MavenSnapshotCheckTest {
         MavenSnapshotCheck mavenSnapshotCheck = new MavenSnapshotCheck(false,null);
         project.getBuildersList().add(mavenSnapshotCheck);
         FreeStyleBuild build = jenkins.buildAndAssertSuccess(project);
+        jenkins.assertLogNotContains("SNAPSHOT", build);
     }
 
     @Test
