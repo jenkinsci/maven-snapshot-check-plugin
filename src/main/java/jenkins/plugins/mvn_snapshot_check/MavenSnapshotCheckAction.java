@@ -8,7 +8,7 @@ import jenkins.model.RunAction2;
  */
 public class MavenSnapshotCheckAction  implements RunAction2{
 
-    private transient Run run;
+    private Run run;
 
     private String message;
 
