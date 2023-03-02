@@ -61,3 +61,4 @@ mavenSnapshotCheck check: 'true', pomFiles: 'pom.xml,sub-dir/pom.xml'
 # 相关博客
 - [Jenkins 插件开发之旅：两天内从 idea 到发布 (上篇)](https://xie.infoq.cn/article/c398bb482db91bada8e40b5c8)
 - [Jenkins 插件开发之旅：两天内从 idea 到发布 (下篇)](https://xie.infoq.cn/article/d394779a53d5cbd5fcfb97860)
+- [Hacktoberfest 2022：Jenkins maven-snapshot-check Plugin 的改进实践](https://xie.infoq.cn/article/828745abeeb280324958955fd)
