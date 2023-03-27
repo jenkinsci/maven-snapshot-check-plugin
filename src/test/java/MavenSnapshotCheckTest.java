@@ -66,7 +66,7 @@ public class MavenSnapshotCheckTest {
         String pipelineScript =
                 "node {\n" +
                         "  unzip '" + zipFile.getPath() + "'\n" +
-                        "  mavenSnapshotCheck check: 'true', pomFiles:'pom.xml' \n" +
+                        "  mavenSnapshotCheck check: 'true', pomFiles:'pom.xml', excludePomFiles: '' \n" +
                         "}";
         job.setDefinition(new CpsFlowDefinition(pipelineScript, true));
         WorkflowRun run = jenkins.assertBuildStatusSuccess(job.scheduleBuild2(0));
