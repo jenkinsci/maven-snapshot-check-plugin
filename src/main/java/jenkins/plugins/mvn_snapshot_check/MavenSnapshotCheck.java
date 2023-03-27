@@ -38,6 +38,7 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
 
     private boolean check;
     private String pomFiles;
+    private String excludePomFiles;
 
     @DataBoundConstructor
     public MavenSnapshotCheck(boolean check, String pomFiles) {
@@ -66,6 +67,15 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
         this.pomFiles = pomFiles;
     }
 
+    public String getExcludePomFiles() {
+        return excludePomFiles;
+    }
+
+    @DataBoundSetter
+    public void setExcludePomFiles(String excludePomFiles) {
+        this.excludePomFiles = excludePomFiles;
+    }
+
     @Override
     public MavenSnapshotCheck.DescriptorImpl getDescriptor() {
         return (MavenSnapshotCheck.DescriptorImpl)super.getDescriptor();
@@ -82,12 +92,12 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
         FilePath workspace = build.getWorkspace();
         if (getCheck()) {
             build.addAction(new MavenSnapshotCheckAction(CHECKED));
-            String message = "[Maven SNAPSHOT Check], pomFiles: " + getPomFiles();
+            String message = "[Maven SNAPSHOT Check], pomFiles: " + getPomFiles() + ", excludePomFiles: " + getExcludePomFiles();
             listener.getLogger().println(message);
             PrintStream logger = listener.getLogger();
             final RemoteOutputStream ros = new RemoteOutputStream(logger);
             try {
-                Boolean foundText = workspace.act(new FileChecker(ros, getPomFiles())); // NOSONAR
+                Boolean foundText = workspace.act(new FileChecker(ros, getPomFiles(), getExcludePomFiles())); // NOSONAR
                 if(null != foundText && foundText){
                     return false;
                 }
@@ -109,7 +119,6 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
      * pipeline plugin
      * @param run a build this is running as a part of
      * @param workspace a workspace to use for any file operations
-     * @param env environment variables applicable to this step
      * @param launcher a way to start processes
      * @param listener a place to send output
      */
@@ -118,12 +127,12 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
                         @NonNull TaskListener listener) {
         if (getCheck()) {
             run.addAction(new MavenSnapshotCheckAction(CHECKED));
-            String message = "[Maven SNAPSHOT Check], pomFiles: " + getPomFiles();
+            String message = "[Maven SNAPSHOT Check], pomFiles: " + getPomFiles() + ", excludePomFiles: " + getExcludePomFiles();
             listener.getLogger().println(message);
             PrintStream logger = listener.getLogger();
             final RemoteOutputStream ros = new RemoteOutputStream(logger);
             try {
-                Boolean foundText = workspace.act(new FileChecker(ros, getPomFiles()));
+                Boolean foundText = workspace.act(new FileChecker(ros, getPomFiles(), getExcludePomFiles()));
                 if(null != foundText && foundText){
                     run.setResult(Result.FAILURE);
                     throw new MavenSnapshotCheckException("Maven SNAPSHOT Check Failed!", null, false, false);
@@ -183,10 +192,12 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
     private static class FileChecker extends MasterToSlaveFileCallable<Boolean> {
         private final RemoteOutputStream ros;
         private String includePomFiles;
+        private String excludePonFiles;
 
-        FileChecker(RemoteOutputStream ros, String includePomFiles) {
+        FileChecker(RemoteOutputStream ros, String includePomFiles, String excludePonFiles) {
             this.ros = ros;
             this.includePomFiles = includePomFiles;
+            this.excludePonFiles = excludePonFiles;
         }
 
         @Override
@@ -200,6 +211,7 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
                 fs.setProject(p);
                 fs.setDir(ws);
                 fs.setIncludes(includePomFiles);
+                fs.setExcludes(excludePonFiles);
                 DirectoryScanner ds = fs.getDirectoryScanner(p);
 
                 // Any files in the final set?

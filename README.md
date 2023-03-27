@@ -40,10 +40,12 @@ or
 ```
 mavenSnapshotCheck check: 'true'
 ```
-or, you can customize the pomFiles parameter to check only the specified pom files 
-(If the pomFiles parameter is not defined, its default value is `pom.xml, * */pom.xml`)
+or, you can customize the pomFiles parameter to check only the specified pom files
+(If the pomFiles parameter is not defined, its default value is `pom.xml, * */pom.xml`),
+or, you can customize the excludePomFiles parameter to skip check the specified pom files
+(If the excludePomFiles parameter is not defined, its default value is `null`),
 ```
-mavenSnapshotCheck check: 'true', pomFiles: 'pom.xml,sub-dir/pom.xml'
+mavenSnapshotCheck check: 'true', pomFiles: 'pom.xml,sub-dir/pom.xml', excludePomFiles: 'sub-dir-2/pom.xml'
 ```
 
 # Bug reports
