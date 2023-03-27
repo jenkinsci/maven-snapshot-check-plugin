@@ -12,5 +12,11 @@
   -->
   <f:entry title="check" field="check">
         <f:checkbox />
-      </f:entry>
+  </f:entry>
+  <f:entry field="pomFiles" title="pomFiles">
+        <f:textbox default="pom.xml,**/pom.xml"/>
+  </f:entry>
+  <f:entry field="excludePomFiles" title="excludePomFiles">
+        <f:textbox default=""/>
+  </f:entry>
 </j:jelly>
