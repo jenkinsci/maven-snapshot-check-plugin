@@ -29,12 +29,12 @@ import java.util.regex.PatternSyntaxException;
 /**
  * @author donghui 2019/4/24.
  */
-public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
+public class MavenSnapshotCheck extends Builder implements SimpleBuildStep {
     private static final String PLUGIN_NAME = "Jenkins Maven SNAPSHOT Check Plugin";
     private static final String DEFAULT_POM_FILES = "pom.xml,**/pom.xml";
     private static final String SNAPSHOT = "SNAPSHOT";
-    private String CHECKED = "Yes, it was checked."; // NOSONAR
-    private String NOT_CHECKED = "No, it wasn't checked."; // NOSONAR
+    private static final String CHECKED = "Yes, it was checked.";
+    private static final String NOT_CHECKED = "No, it wasn't checked.";
 
     private boolean check;
     private String pomFiles;
@@ -97,7 +97,7 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
             PrintStream logger = listener.getLogger();
             final RemoteOutputStream ros = new RemoteOutputStream(logger);
             try {
-                Boolean foundText = workspace.act(new FileChecker(ros, getPomFiles(), getExcludePomFiles())); // NOSONAR
+                Boolean foundText = workspace.act(new FileChecker(ros, getPomFiles(), getExcludePomFiles()));
                 if(null != foundText && foundText){
                     return false;
                 }
@@ -177,8 +177,9 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
         }
 
         /**
-         * This human readable name is used in the configuration screen.
+         * This human-readable name is used in the configuration screen.
          */
+        @NonNull
         @Override
         public String getDisplayName() {
             return "Maven SNAPSHOT Check";
@@ -191,8 +192,8 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
      */
     private static class FileChecker extends MasterToSlaveFileCallable<Boolean> {
         private final RemoteOutputStream ros;
-        private String includePomFiles;
-        private String excludePonFiles;
+        private final String includePomFiles;
+        private final String excludePonFiles;
 
         FileChecker(RemoteOutputStream ros, String includePomFiles, String excludePonFiles) {
             this.ros = ros;
@@ -203,7 +204,7 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
         @Override
         public Boolean invoke(File ws, VirtualChannel channel) throws IOException {
             boolean foundText = false;
-            try(PrintStream logger = new PrintStream(ros, false, Charset.defaultCharset().toString())) {
+            try(PrintStream logger = new PrintStream(ros, false, Charset.defaultCharset())) {
 
                 // Collect list of files for searching
                 FileSet fs = new FileSet();
@@ -236,7 +237,7 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
                         logger.println(message);
                         continue;
                     }
-                    foundText |= checkFile(f, pattern, logger, Charset.defaultCharset()); //NOSONAR
+                    foundText |= checkFile(f, pattern, logger, Charset.defaultCharset());
                 }
             }
 
@@ -255,7 +256,7 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep{
             boolean logFilename = true;
             boolean foundText = false;
 
-            try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(f), charset));) {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(f), charset))) {
                 // Assume default encoding and text files
                 String line;
                 while ((line = reader.readLine()) != null) {

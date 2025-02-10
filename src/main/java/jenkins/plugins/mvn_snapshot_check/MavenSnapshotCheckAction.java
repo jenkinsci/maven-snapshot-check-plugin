@@ -6,7 +6,7 @@ import jenkins.model.RunAction2;
 /**
  * @author donghui 2019/5/11.
  */
-public class MavenSnapshotCheckAction  implements RunAction2{
+public class MavenSnapshotCheckAction implements RunAction2 {
 
     private Run run;
 
