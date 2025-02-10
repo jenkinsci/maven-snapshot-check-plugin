@@ -1,22 +1,21 @@
+package jenkins.plugins.mvn_snapshot_check;
+
 import hudson.model.*;
-import jenkins.plugins.mvn_snapshot_check.MavenSnapshotCheck;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.ExtractResourceSCM;
 import org.jvnet.hudson.test.JenkinsRule;
+import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
 import java.net.URL;
 
-public class MavenSnapshotCheckTest {
-
-    @Rule
-    public JenkinsRule jenkins = new JenkinsRule();
+@WithJenkins
+class MavenSnapshotCheckTest {
 
     @Test
-    public void testFreestyleBuildSuccess() throws Exception {
+    void testFreestyleBuildSuccess(JenkinsRule jenkins) throws Exception {
         FreeStyleProject project = jenkins.createFreeStyleProject();
         project.setScm(new ExtractResourceSCM(getClass().getResource("test-success.zip")));
         MavenSnapshotCheck mavenSnapshotCheck = new MavenSnapshotCheck(true,null);
@@ -26,7 +25,7 @@ public class MavenSnapshotCheckTest {
     }
 
     @Test
-    public void testFreestyleBuildFailure() throws Exception {
+    void testFreestyleBuildFailure(JenkinsRule jenkins) throws Exception {
         FreeStyleProject project = jenkins.createFreeStyleProject();
         project.setScm(new ExtractResourceSCM(getClass().getResource("test-failure.zip")));
         MavenSnapshotCheck mavenSnapshotCheck = new MavenSnapshotCheck(true,null);
@@ -36,7 +35,7 @@ public class MavenSnapshotCheckTest {
     }
 
     @Test
-    public void testFreestyleBuildSuccessNotChecked() throws Exception {
+    void testFreestyleBuildSuccessNotChecked(JenkinsRule jenkins) throws Exception {
         FreeStyleProject project = jenkins.createFreeStyleProject();
         project.setScm(new ExtractResourceSCM(getClass().getResource("test-success.zip")));
         MavenSnapshotCheck mavenSnapshotCheck = new MavenSnapshotCheck(false,null);
@@ -46,7 +45,7 @@ public class MavenSnapshotCheckTest {
     }
 
     @Test
-    public void testPipelineBuildSuccess() throws Exception {
+    void testPipelineBuildSuccess(JenkinsRule jenkins) throws Exception {
         URL zipFile = getClass().getResource("test-success.zip");
         WorkflowJob job = jenkins.createProject(WorkflowJob.class, "test-pipeline-success");
         String pipelineScript =
@@ -60,7 +59,7 @@ public class MavenSnapshotCheckTest {
     }
 
     @Test
-    public void testPipelineBuildSuccessWithPomFiles() throws Exception {
+    void testPipelineBuildSuccessWithPomFiles(JenkinsRule jenkins) throws Exception {
         URL zipFile = getClass().getResource("test-success.zip");
         WorkflowJob job = jenkins.createProject(WorkflowJob.class, "test-pipeline-success");
         String pipelineScript =
@@ -74,7 +73,7 @@ public class MavenSnapshotCheckTest {
     }
 
     @Test
-    public void testPipelineBuildSuccessWithNotChecked() throws Exception {
+    void testPipelineBuildSuccessWithNotChecked(JenkinsRule jenkins) throws Exception {
         URL zipFile = getClass().getResource("test-success.zip");
         WorkflowJob job = jenkins.createProject(WorkflowJob.class, "test-pipeline-success");
         String pipelineScript =
@@ -87,7 +86,7 @@ public class MavenSnapshotCheckTest {
     }
 
     @Test
-    public void testPipelineBuildFailure() throws Exception {
+    void testPipelineBuildFailure(JenkinsRule jenkins) throws Exception {
         URL zipFile = getClass().getResource("test-failure.zip");
 
         WorkflowJob job = jenkins.createProject(WorkflowJob.class, "test-pipeline-failure");
