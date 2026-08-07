@@ -3,6 +3,7 @@ package jenkins.plugins.mvn_snapshot_check;
 import hudson.EnvVars;
 import hudson.Extension;
 import hudson.FilePath;
+import hudson.Util;
 import hudson.Launcher;
 import hudson.model.*;
 import hudson.remoting.RemoteOutputStream;
@@ -11,7 +12,6 @@ import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.Builder;
 import jenkins.MasterToSlaveFileCallable;
 import jenkins.tasks.SimpleBuildStep;
-import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.Symbol;
 import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.Project;
@@ -56,7 +56,7 @@ public class MavenSnapshotCheck extends Builder implements SimpleBuildStep {
     }
 
     public String getPomFiles() {
-        if(StringUtils.isNotEmpty(pomFiles)){
+        if(Util.fixEmpty(pomFiles) != null){
             return pomFiles;
         }
         return DEFAULT_POM_FILES;
